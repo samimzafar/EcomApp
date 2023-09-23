@@ -1,21 +1,15 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import StackNavigator from './src/navigation/StackNavigator';
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open App.js</Text>
-    </View>
+    <>
+      <StackNavigator />
+    </>
   );
 };
 
 export default App;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-});
+const styles = StyleSheet.create({});
