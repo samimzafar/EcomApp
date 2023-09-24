@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Pressable,
@@ -13,11 +14,29 @@ import {height, totalSize, width} from 'react-native-dimension';
 import {ImageConst} from '../assets/Images';
 import {useNavigation} from '@react-navigation/native';
 import {ScreenConst} from '../constants/ScreenConst';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const handleLogin = async () => {
+    axios
+      .post('http://localhost:8000/api/login', {email, password})
+      .then(response => {
+        console.log(response);
+        Alert.alert('Login successful', 'You have been Login Successfully');
+        AsyncStorage.setItem('AuthToken', response?.data?.token);
+        setEmail('');
+        setPassword('');
+        navigation.navigate(ScreenConst.HOME);
+      })
+      .catch(error => {
+        Alert.alert('Login Error', 'An error occurred while Logging in');
+        console.log('Login failed', error);
+      });
+  };
   return (
     <SafeAreaView
       style={{
@@ -132,6 +151,7 @@ const LoginScreen = () => {
           </View>
 
           <Pressable
+            onPress={handleLogin}
             style={{
               backgroundColor: '#FEBE10',
               padding: totalSize(2),

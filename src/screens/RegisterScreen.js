@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Pressable,
@@ -12,12 +13,40 @@ import React, {useState} from 'react';
 import {ImageConst} from '../assets/Images';
 import {height, totalSize, width} from 'react-native-dimension';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const handleRegistration = async () => {
+    const user = {
+      name,
+      email,
+      password,
+    };
+
+    axios
+      .post('http://localhost:8000/api/register', user)
+      .then(response => {
+        console.log(response);
+        Alert.alert(
+          'Registration successful',
+          'You have been registered Successfully',
+        );
+        setName('');
+        setEmail('');
+        setPassword('');
+      })
+      .catch(error => {
+        Alert.alert(
+          'Registration Error',
+          'An error occurred while registering',
+        );
+        console.log('registration failed', error);
+      });
+  };
   return (
     <SafeAreaView
       style={{
@@ -157,6 +186,7 @@ const RegisterScreen = () => {
           </View>
 
           <Pressable
+            onPress={handleRegistration}
             style={{
               backgroundColor: '#FEBE10',
               padding: totalSize(2),
